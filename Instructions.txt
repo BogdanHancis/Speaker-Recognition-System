@@ -1,0 +1,74 @@
+Instructions 
+1. Requirements & Installation
+Before running the code, ensure the following are installed:
+Python Environment:
+Python 3.9+
+Recommended: Use venv or conda
+ Install Dependencies:
+pip install -r requirements.txt
+Required packages:nump  
+scipy
+librosa
+tensorflow>=2.9
+scikit-learn
+matplotlib
+pandas
+seaborn
+sounddevice (for real-time audio)
+python_speech_features (if used)
+2.  Dataset Structure
+Organize your speaker dataset as follows:
+python-repl
+dataset/
+├── speaker1/
+│   ├── sample1.wav
+│   ├── sample2.wav
+│   └── 
+├── speaker2/
+│   ├── sample1.wav
+│   └── 
+
+Each folder must contain .wav files for a single speaker. All files should be mono and 16kHz.
+In case we have a different path for our database , we need to update the path in the code 
+Dataset taken from  : https://www.kaggle.com/datasets/kongaevans/speaker-recognition-dataset
+
+3. Training the Model
+Run this script to start training:
+python train_model.py
+Training Configuration (inside script):
+MFCC frame length: 25ms
+Sampling rate: 16kHz
+CNN: 2 Conv layers + Dense + Softmax
+Batch size: 16
+Optimizer: Adam (ε=1e-4)
+Learning rate scheduler: ReduceLROnPlateau
+EarlyStopping enabled
+The trained model and logs will be saved in the models/ and logs/ folders.
+
+4. Testing Speaker Identity (with Audio File)
+To test the system with a saved .wav file:
+python predict_speaker.py --input_path test_audio.wav
+This script:
+Loads the trained model
+Extracts MFCCs from the input
+Predicts speaker identity using cosine similarity
+Displays the top predicted speaker and confidence
+
+
+5.Evaluation & Metrics
+Run the evaluation script:
+python evaluate_model.py
+This provides:
+Confusion matrix
+Accuracy and F1-score
+FRR and FAR statistics
+EER calculation
+Heatmap of predictions
+CSV export of results
+
+6. Additional Notes
+All scripts are in UTF-8 encoding.
+Model checkpoints are saved every epoch (models/).
+Training logs are saved for TensorBoard visualization.
+Noise robustness experiments used DEMAND dataset (optional).
+Preprocessing settings (e.g., MFCC configs) can be changed in config.py.
